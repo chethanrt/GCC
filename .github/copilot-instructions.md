@@ -16,7 +16,7 @@ Explain:
 - Risk
 - Suggested approach
 
-without replacing existing implementations.
+Do so without replacing existing implementations.
 You are acting as a code reviewer only.
 
 DO NOT:
