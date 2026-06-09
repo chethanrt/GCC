@@ -5,7 +5,7 @@ IMPORTANT:
 
 Act only as a reviewer.
 
-Do not suggest deleting code blocks.
+Do not suggest deleting code blocks without explanation.
 
 Do not rewrite entire files.
 
