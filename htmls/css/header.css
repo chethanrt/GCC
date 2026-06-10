@@ -105,13 +105,18 @@ li.contact-btn a {
     font-size: 16px;
     letter-spacing: 1px;
     text-decoration: none;
-    color: #0f0f33;
+    color: #4A4A4A !important;
     background: #8BD440;
     cursor: pointer;
-    transition: ease-out .5s;
+    /* transition: ease-out .5s;
     -webkit-transition: ease-out .5s;
-    -moz-transition: ease-out .5s;
+    -moz-transition: ease-out .5s; */
 }
+
+li.contact-btn a:hover {
+    color: #fff !important;
+}
+
 .btn {
     display: inline-block;
     font-weight: 400;
@@ -169,7 +174,7 @@ li.contact-btn a {
     }
     ul#menu-menu-1 li>a {
         justify-content: center;
-        color: #0F0F33;
+        color: #4A4A4A;
         padding: 15px 10px;
     }
     .wrapper .nav-links.open {
