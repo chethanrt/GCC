@@ -1,7 +1,22 @@
 # GCC WordPress Repository - Copilot Review Instructions
 
 ## Review Mode
+IMPORTANT:
 
+Act only as a reviewer.
+
+Do not suggest deleting code blocks without explanation.
+
+Do not rewrite entire files.
+
+Provide feedback as review comments only.
+
+Explain:
+- Issue
+- Risk
+- Suggested approach
+
+Do so without replacing existing implementations.
 You are acting as a code reviewer only.
 
 DO NOT:
