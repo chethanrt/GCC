@@ -3,7 +3,7 @@
 main {
     /* margin-top: 75px; */
 }
-.hero {
+.em-hero {
     /* margin-top: 76px; */
     height: 440px;
     background-image: url('../images/engagement-models.jpg');
@@ -17,7 +17,7 @@ main {
     padding: 0 60px;
 }
 
-.hero::after {
+.em-hero::after {
     content: '';
     position: absolute;
     inset: 0;
@@ -29,20 +29,20 @@ main {
     z-index: 0;
 }
 
-.hero::before {
+.em-hero::before {
     content: '';
     position: absolute;
     inset: 0;
 }
 
-.hero-overlay {
+.em-hero-overlay {
     position: relative;
     z-index: 1;
     text-align: left;
     padding: 0;
 }
 
-.hero-overlay h1 {
+.em-hero-overlay h1 {
     color: #0F0F33;
     font-family: 'Sailec Bold';
     /* font-size: 60px; */
@@ -51,11 +51,11 @@ main {
     margin: 0 0 16px;
 }
 
-span.green {
+span.em-green {
     color: #005900;
 }
 
-.hero-overlay .hero-line {
+.em-hero-overlay .em-hero-line {
     width: 90px;
     height: 5px;
     background: #8BD440;
@@ -63,13 +63,13 @@ span.green {
 }
 
 /* CTA Section */
-.cta-section {
+.em-cta-section {
     display: flex;
     justify-content: center;
     padding-top: 100px;
 }
 
-.cta-btn {
+.em-cta-btn {
     background: #005900;
     color: #fff;
     font-family: 'Sailec Bold';
@@ -80,19 +80,19 @@ span.green {
     transition: opacity 0.2s ease;
 }
 
-.cta-btn:hover {
+.em-cta-btn:hover {
     opacity: 0.85;
 }
 
 /* Intro Section */
-.intro-section {
+.em-intro-section {
     text-align: center;
     padding: 36px 20px;
-    max-width: 85%;
+    max-width: 90%;
     margin: 0 auto;
 }
 
-.intro-section h2 {
+.em-intro-section h2 {
     font-family: 'Sailec Bold';
     /* font-size: 40px; */
     font-size: 2.5vw;
@@ -101,7 +101,7 @@ span.green {
     line-height: 1.6;
 }
 
-.intro-section p {
+.em-intro-section p {
     font-family: 'Sailec Light';
     font-size: 17px;
     color: #555;
@@ -110,16 +110,16 @@ span.green {
 }
 
 /* Cards Section */
-.models {
+.em-models {
     display: grid;
     grid-template-columns: repeat(3, 1fr);
     gap: 24px;
     padding: 0 40px 80px;
-    max-width: 85%;
+    max-width: 90%;
     margin: 0 auto;
 }
 
-.model-card {
+.em-model-card {
     border: 2px solid rgb(50 48 48 / 7%);
     border-radius: 12px;
     background: transparent;
@@ -129,7 +129,7 @@ span.green {
     align-items: flex-start;
 }
 
-.card-icon {
+.em-card-icon {
     width: 48px;
     background: #F2F8F2;
     height: 48px;
@@ -139,7 +139,7 @@ span.green {
     border-radius: 50px;
 }
 
-.card-eyebrow {
+.em-card-eyebrow {
     font-family: 'Sailec Medium';
     font-size: 12px;
     color: #005900;
@@ -147,7 +147,7 @@ span.green {
     margin-bottom: 0;
 }
 
-.card-title {
+.em-card-title {
     font-family: 'Sailec Medium';
     /* font-size: 32px; */
     font-size: 20px;
@@ -155,7 +155,7 @@ span.green {
     margin: 10px 0;
 }
 
-.card-line {
+.em-card-line {
     width: 90px;
     height: 5px;
     background: #8BD440;
@@ -163,7 +163,7 @@ span.green {
     margin-bottom: 16px;
 }
 
-.card-desc {
+.em-card-desc {
     font-family: 'Sailec Light';
     font-size: 17px;
     color: #555;
@@ -171,11 +171,11 @@ span.green {
     margin: 0;
 }
 
-.card-bottom {
+.em-card-bottom {
     margin-top: auto;
 }
 
-.card-bottom p {
+.em-card-bottom p {
     background: #F3F8F0;
     padding: 30px;
     font-size: 17px;
@@ -185,7 +185,7 @@ span.green {
     line-height: 1.6;
 }
 
-.card-bottom p span {
+.em-card-bottom p span {
     font-family: 'Sailec Bold';
 }
 
@@ -193,62 +193,62 @@ span.green {
 /* Responsive */
 
 @media (min-width: 1500px) {
-    .card-eyebrow {
+    .em-card-eyebrow {
         font-size: 17px;
     }
-    .card-title {
+    .em-card-title {
         font-size: 26px;
     }
-    .card-desc,
-    .card-bottom p {
+    .em-card-desc,
+    .em-card-bottom p {
         font-size: 20px;
     }
 }
 @media (max-width: 970px) {
-    .hero-overlay h1 {
+    .em-hero-overlay h1 {
         font-size: 30px;
     }
 
-    .models {
+    .em-models {
         grid-template-columns: repeat(2, 1fr);
         padding: 0 24px 60px;
     }
 }
 
 @media (max-width: 767px) {
-    .hero {
+    .em-hero {
         height: 320px;
     }
 
-    .hero-overlay h1 {
+    .em-hero-overlay h1 {
         font-size: 24px;
     }
 
-    .intro-section {
+    .em-intro-section {
         padding: 40px 20px;
         max-width: 100%;
     }
 
-    .intro-section h2 {
+    .em-intro-section h2 {
         font-size: 24px;
     }
 
-    .models {
+    .em-models {
         grid-template-columns: 1fr;
         padding: 0 20px 40px;
         max-width: 100%;
     }
-    .model-card {
+    .em-model-card {
         padding: 20px;
     }
-    .card-title {
+    .em-card-title {
         font-size: 22px;
     }
-    .card-eyebrow {
+    .em-card-eyebrow {
         font-size: 14px;
     }
-    .card-desc,
-    .card-bottom p {
+    .em-card-desc,
+    .em-card-bottom p {
         font-size: 17px;
     }
 }
