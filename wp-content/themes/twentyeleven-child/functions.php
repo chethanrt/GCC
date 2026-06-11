@@ -158,4 +158,21 @@ add_action('init', function () {
 
 
 
+function my_template_styles() {
+
+    if (is_page_template('template-our-team.php')) {
+
+        echo '<!-- TEMPLATE DETECTED -->';
+
+        wp_enqueue_style(
+            'our-team-css',
+            get_stylesheet_directory_uri() . '/assets/css/our-team.css',
+            [],
+            time()
+        );
+    }
+}
+add_action('wp_enqueue_scripts', 'my_template_styles');
+
+
 ?>
