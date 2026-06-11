@@ -1,0 +1,84 @@
+# =========================
+# WordPress Core
+# =========================
+wp-admin/
+wp-includes/
+
+# Root WordPress files
+index.php
+license.txt
+readme.html
+wp-activate.php
+wp-blog-header.php
+wp-comments-post.php
+wp-cron.php
+wp-links-opml.php
+wp-load.php
+wp-login.php
+wp-mail.php
+wp-settings.php
+wp-signup.php
+wp-trackback.php
+xmlrpc.php
+
+# =========================
+# Config
+# =========================
+wp-config.php
+wp-config-sample.php
+.env
+
+# =========================
+# Ignore All Themes
+# =========================
+wp-content/themes/*
+
+# Allow Only Custom Theme
+!wp-content/themes/twentyeleven-child/
+
+# Allow Theme Files
+!wp-content/themes/twentyeleven-child/**
+
+# =========================
+# Ignore Plugins
+# =========================
+wp-content/plugins/*
+
+# Allow Custom Plugins (optional)
+!wp-content/plugins/custom-plugin/
+!wp-content/plugins/custom-plugin/**
+
+# =========================
+# Uploads / Cache
+# =========================
+wp-content/uploads/
+wp-content/cache/
+wp-content/upgrade/
+
+# =========================
+# Dependencies
+# =========================
+node_modules/
+vendor/
+
+# =========================
+# Logs
+# =========================
+*.log
+
+# =========================
+# IDE / OS
+# =========================
+.DS_Store
+Thumbs.db
+.idea/
+.vscode/
+
+# =========================
+# Local DB Dumps
+# =========================
+*.sql
+
+.htaccess
+
+local-xdebuginfo.php
