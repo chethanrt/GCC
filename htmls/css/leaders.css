@@ -152,13 +152,31 @@ span.l-bottom-green {
     text-align: center;
 }
 
+.leadership {
+    border-radius: 15px 15px 0 0;
+    position: relative;
+    width: fit-content;
+    margin: auto;
+}
+
 .l-card-icon {
     width: 186px;
     height: 186px;
     object-fit: contain;
-    margin-bottom: 5px;
-    padding: 20px;
     border-radius: 50px;
+}
+
+.in-icon {
+    position: absolute;
+    bottom: 10px;
+    right: 0;
+    width: 40px;
+    height: 40px;
+}
+
+.l-img-fluid {
+    max-width: 100%;
+    height: auto;
 }
 
 .l-card-title {
