@@ -1,0 +1,145 @@
+/* Hero */
+
+main {
+    /* margin-top: 75px; */
+}
+.id-hero {
+    /* margin-top: 76px; */
+    height: 440px;
+    background-image: url('../images/insights-detail-banner.png');
+    background-size: cover;
+    background-position: bottom;
+    background-repeat: no-repeat;
+    position: relative;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 0 60px;
+}
+
+.id-hero::after {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background-color: #F4F4F4;
+    background-size: cover;
+    background-position: bottom;
+    background-repeat: no-repeat;
+    opacity: 0.5;
+    z-index: 0;
+}
+
+.id-hero::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+}
+
+.id-hero-overlay {
+    position: relative;
+    z-index: 1;
+    text-align: center;
+    padding: 0;
+}
+
+.id-hero-overlay h1 {
+    color: #0F0F33;
+    font-family: 'Sailec Bold';
+    /* font-size: 60px; */
+    font-size: 4vw;
+    line-height: 1.3;
+    margin: 0 0 16px;
+}
+
+span.id-green {
+    color: #005900;
+}
+
+.id-hero-overlay .id-hero-line {
+    width: 90px;
+    height: 5px;
+    background: #8BD440;
+    border-radius: 2px;
+}
+
+.id-hero-desc {
+    font-family: 'Sailec Light';
+    font-size: 17px;
+    color: #555;
+    line-height: 1.6;
+    margin: auto;
+    width: 60%;
+}
+
+.id-content-section {
+    text-align: left;
+    padding-top: 75px;
+    padding-bottom: 50px;
+    max-width: 90%;
+    margin: 0 auto;
+}
+
+.id-img {
+    display: flex;
+    justify-content: flex-start;
+    gap: 25px;
+    margin: 50px auto;
+}
+
+.id-img img {
+    width: 350px;
+    object-fit: contain;
+}
+
+.id-para {
+    margin-bottom: 20px;
+}
+
+.id-para h2 {
+    color: #646464;
+    font-family: 'Sailec Medium';
+    font-size: 20px;
+}
+
+.id-para .id-desc {
+    color: #646464;
+    font-family: 'Sailec Light';
+    line-height: 1.6;
+    font-size: 17px;
+}
+
+.id-para ul {
+    color: #646464;
+    font-family: 'Sailec Light';
+    line-height: 1.6;
+    font-size: 17px;
+}
+
+/* Responsive */
+
+@media (min-width: 1500px) {
+}
+@media (max-width: 1200px) {
+}
+@media (max-width: 970px) {
+}
+
+@media (max-width: 767px) {
+    .id-hero {
+        height: 320px;
+        padding: 0 30px;
+    }
+
+    .id-hero-desc {
+        width: 100%;
+    }
+
+    .id-hero-overlay h1 {
+        font-size: 24px;
+    }
+
+    .id-img {
+        flex-direction: column;
+    }
+
+}

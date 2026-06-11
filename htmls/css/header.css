@@ -149,7 +149,7 @@ li.contact-btn a:hover {
         margin: 0 7px;
     }
 }
-@media screen and (max-width: 970px) {
+@media screen and (max-width: 1200px) {
     nav .wrapper .logo {
         z-index: 99;
     }
