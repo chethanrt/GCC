@@ -5,10 +5,12 @@
 
 get_header();
 
-$hero_bg = get_field('hero_background_image');
-$title = get_field('title');
-$cards   = get_field('card');
-$cta     = get_field('book_a_conversation');
+$hero_bg          = get_field('hero_background_image');
+$hero_title       = get_field('hero_title');
+$hero_description = get_field('hero_description');
+$title            = get_field('title');
+$cards            = get_field('card');
+$cta              = get_field('book_a_conversation');
 ?>
 
 <main>
@@ -21,14 +23,13 @@ $cta     = get_field('book_a_conversation');
         <?php endif; ?>
         >
         <div class="l-hero-overlay">
-                <h1> <?php echo wp_kses_post(get_field('hero_title')); ?>  </h1>
+            <h1><?php echo wp_kses_post($hero_title); ?></h1>
+
             <div class="l-hero-line"></div>
 
-                <p class="l-hero-desc">
-                    <?php echo esc_html(get_field('hero_description')); ?>
-                </p>
-            
-
+            <p class="l-hero-desc">
+                <?php echo esc_html($hero_description); ?>
+            </p>
         </div>
     </section>
 
@@ -51,7 +52,7 @@ $cta     = get_field('book_a_conversation');
             <div class="leadership">
 
                 <?php if (!empty($card['profile_link'])) : ?>
-                    <a href="<?php echo esc_url($card['profile_link']); ?>" target="_blank">
+                    <a href="<?php echo esc_url($card['profile_link']); ?>" target="_blank" rel="noopener noreferrer">
                 <?php endif; ?>
 
                 <?php if (!empty($card['image'])) : ?>
@@ -67,12 +68,12 @@ $cta     = get_field('book_a_conversation');
 
                 <?php if (!empty($card['linkedin_link'])) : ?>
                 <div class="in-icon">
-                    <a href="<?php echo esc_url($card['linkedin_link']); ?>" target="_blank">
-                     <img
-                        class="l-img-fluid"
-                        src="<?php echo esc_url( home_url('/wp-content/uploads/2026/06/in-icon.png') ); ?>"
-                        alt="LinkedIn"
-                    >
+                    <a href="<?php echo esc_url($card['linkedin_link']); ?>" target="_blank" rel="noopener noreferrer">
+                        <img
+                            class="l-img-fluid"
+                            src="<?php echo esc_url( get_stylesheet_directory_uri() . '/assets/images/in-icon.png' ); ?>"
+                            alt="LinkedIn"
+                        >
                     </a>
                 </div>
                 <?php endif; ?>
@@ -111,19 +112,25 @@ $cta     = get_field('book_a_conversation');
 </section>
 <?php endif; ?>
 
-
+<?php if (
+    !empty($cta) &&
+    (
+        !empty($cta['heading']) ||
+        !empty($cta['button']['text'])
+    )
+) : ?>
 <section class="l-bottom-section">
     <div class="l-cta-section">
 
         <div class="l-cta-icon">
             <img
-                src="<?php echo esc_url(home_url('/wp-content/uploads/2026/06/l-bottom-icon.png')); ?>"
+                src="<?php echo esc_url( get_stylesheet_directory_uri() . '/assets/images/l-bottom-icon.png' ); ?>"
                 alt="GCC Care"
             >
         </div>
 
         <p class="l-cta-desc">
-            <?php echo wp_kses_post($cta['heading']); ?>
+            <?php echo wp_kses_post($cta['heading'] ?? ''); ?>
         </p>
 
         <?php if (!empty($cta['button']['text'])) : ?>
@@ -137,6 +144,7 @@ $cta     = get_field('book_a_conversation');
 
     </div>
 </section>
+<?php endif; ?>
 </main>
 
 <?php get_footer(); ?>
