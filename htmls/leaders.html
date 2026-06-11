@@ -8,6 +8,8 @@
     <link rel="stylesheet" href="css/header.css">
     <link rel="stylesheet" href="css/footer.css">
     <link rel="stylesheet" href="css/leaders.css">
+    <script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
+    <script src="./js/script.js"></script>
 </head>
 <body>
     <header>
@@ -217,38 +219,5 @@
             <span><a href="#">Privacy Policy</a></span>
         </section>
     </footer>
-
-    <script>
-        const menuBtn = document.getElementById('menu-btn');
-        const closeBtn = document.getElementById('close-btn');
-        const navLinks = document.querySelector('.nav-links');
-        const overlay = document.getElementById('nav-overlay');
-
-        function openMenu() {
-            navLinks.classList.add('open');
-            overlay.classList.add('open');
-            menuBtn.innerHTML = '<i class="fas fa-times"></i>';
-        }
-
-        function closeMenu() {
-            navLinks.classList.remove('open');
-            overlay.classList.remove('open');
-            menuBtn.innerHTML = '<i class="fas fa-bars"></i>';
-        }
-
-        menuBtn.addEventListener('click', () => {
-            openMenu();
-            // navLinks.classList.contains('open') ? closeMenu() : openMenu();
-        });
-
-        closeBtn.addEventListener('click', () => {
-            closeMenu();
-            // navLinks.classList.contains('open') ? closeMenu() : openMenu();
-        });
-
-        closeBtn.addEventListener('click', closeMenu);
-        overlay.addEventListener('click', closeMenu);
-        // closeBtn.addEventListener('click', closeMenu);
-    </script>
 </body>
 </html>
