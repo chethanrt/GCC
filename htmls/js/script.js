@@ -92,4 +92,26 @@ jQuery(document).ready(function ($) {
     });
     // form validation
 
+
+    $('#ytThumb').click(function () {
+
+
+        $('#ytFrame').attr(
+            'src',
+            'https://www.youtube.com/embed/EngW7tLk6R8?autoplay=1'
+        );
+
+        $('#videoModal').fadeIn();
+    });
+
+    $('.video-close, #videoModal').click(function (e) {
+
+        if ($(e.target).is('#videoModal, .video-close')) {
+
+            $('#videoModal').fadeOut(function () {
+                $('#ytFrame').attr('src', '');
+            });
+        }
+    });
+
 });
