@@ -1,16 +1,267 @@
-<html>
+<!DOCTYPE html>
+<html lang="en">
 <head>
     <meta charset="UTF-8">
-    <title>Contact Us</title>
-    <link rel="stylesheet" href="../css/contact.css">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Contact</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+    <link rel="stylesheet" href="css/header.css">
+    <link rel="stylesheet" href="css/footer.css">
+    <link rel="stylesheet" href="css/contact.css">
+    <script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
+    <script src="./js/script.js"></script>
 </head>
 <body>
-    <div class="contact-container">
-        <h1>Contact Us  test</h1>
-        <form action="/submit_contact" method="post" class="contact-form">
-            <label for="name">Name:</label>
-            <input type="text" id="name" name="name" required>  
-        </form>
-    </div>
+    <header>
+        <nav>
+            <div class="wrapper">
+                <div class="logo">
+                    <a href="https://impelsysgcc.com/">
+                        <img src="./images/impelsys-logo.png" alt="">
+                    </a>
+                </div>
+                <ul id="menu-menu-1" class="nav-links">
+                    <li class="menu-item">
+                        <a href="javascript:void(0)">What Sets Us Apart</a>
+                    </li>
+                    <li class="menu-item">
+                        <a href="javascript:void(0)">Engagement Models</a>
+                    </li>
+                    <li class="menu-item">
+                        <a href="javascript:void(0)">Our Team</a>
+                    </li>
+                    <li class="menu-item">
+                        <a href="javascript:void(0)">Insights</a>
+                    </li>
+                    <li class="menu-item contact-btn">
+                        <a href="javascript:void(0)">Contact Us</a>
+                    </li>
+                </ul>
+                <label for="close-btn" class="btn close-btn" id="close-btn"><i class="fa fa-times"></i></label>
+                <span class="btn menu-btn" id="menu-btn"><i class="fas fa-bars"></i></span>
+            </div>
+        </nav>
+        <!-- <div class="co-nav-overlay" id="nav-overlay"></div> -->
+    </header>
+
+    <main>
+        <!-- Hero Section -->
+        <section class="co-hero">
+            <div class="co-hero-overlay">
+                <h1>Contact <span class="co-green">Us</span></h1>
+                <p class="co-hero-desc">Your future GCC is one conversation away</p>
+            </div>
+        </section>
+        
+        <section class="contact-section">
+            <div class="container-fluid">
+                <div class="flex-row">
+                    <!-- Email Box -->
+                    <div class="col-lg-6">
+                        <div class="email-box">
+                            <div class="align-items-center">
+                                <div class="me-3">
+                                    <img class="img-fluid" src="./images/email-icon.png" alt="">
+                                </div>
+                                <div class="w-100">
+                                    <h4>Email</h4>
+                                    <a href="mailto:marketing@impelsys.com" data-faitracker-click-bind="true">marketing@impelsys.com</a>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Phone Box -->
+                    <div class="col-lg-6">
+                        <div class="email-box">
+                            <div class="align-items-center">
+                                <div class="me-3">
+                                    <img class="img-fluid" src="./images/phone-icon.png" alt="">
+                                </div>
+                                <div class="w-100">
+                                    <h4>Phone</h4> 
+                                    <a href="tel:080 2245 5888" data-faitracker-click-bind="true">080 2245 5888</a>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+        
+        <section class="contact-form">
+            <div class="contact-form-container">
+                <h2>Fill in the form below and we’ll get in touch with you.</h2>
+                <form class="form-wrapper" novalidate>
+                    <div class="form-row three-fields">
+                        <div class="form-group">
+                            <input type="text" id="name" class="form-control field-required" placeholder="Full Name" required>
+                            <label for="name">First Name<span class="require-label">*</span></label>
+                            <span class="error-message"></span>
+                        </div>
+                        <div class="form-group">
+                            <input type="email" id="email" class="form-control field-required" placeholder="Email Address" required>
+                            <label for="email">Email Address<span class="require-label">*</span></label>
+                            <span class="error-message"></span>
+                        </div>
+                        <div class="form-group">
+                            <input type="tel" id="phone" class="form-control" placeholder="Phone Number" required>
+                            <label for="phone">Mobile</label>
+                            <span class="error-message"></span>
+                        </div>
+                    </div>
+
+                    <div class="form-row">
+                        <div class="form-group">
+                            <input type="text" id="company-name" class="form-control field-required" placeholder="Phone Number" required>
+                            <label for="company-name">Company Name<span class="require-label">*</span></label>
+                            <span class="error-message"></span>
+                        </div>
+                        <div class="form-group">
+                            <input type="text" id="subject" class="form-control field-required" placeholder="Subject" required>
+                            <label for="subject">What can we help you with?<span class="require-label">*</span></label>
+                            <span class="error-message"></span>
+                        </div>
+                    </div>
+
+                    <div class="form-row">
+                        <div class="form-group full-width">
+                            <textarea id="message" class="form-control field-required" placeholder="Your Message" rows="5" required></textarea>
+                            <label for="message">Additional Details<span class="require-label">*</span></label>
+                            <span class="error-message"></span>
+                        </div>
+                    </div>
+
+                    <div class="form-row checkbox-row">
+                        <div class="checkbox-group">
+                            <input type="checkbox" id="terms" class="form-checkbox" required>
+                            <label for="terms" class="checkbox-label">
+                                I agree to Impelsys' <a href="#">Terms & Conditions</a>
+                            </label>
+                        </div>
+                    </div>
+
+                    <div class="form-row submit-block">
+                        <button type="submit" class="submit-btn">Submit Now</button>
+                    </div>
+                </form>
+            </div>
+        </section>
+
+        <section class="co-intro-section">
+            <h2>Our Location</h2>
+        </section>
+
+        <section class="co-models">
+            <div class="co-model-card">
+                <div class="co-card-main">
+                    <img class="co-img-fluid" src="https://impelsys.com/wp-content/uploads/2025/10/locations-01.webp" alt="New York &lt;span&gt;(HQ)&lt;/span&gt;, USA">
+                    <div class="co-location-content">
+                        <h4>New York <span>(HQ)</span>, USA</h4>
+                        <div class="co-address-text">
+                            <div class="co-map-icon">
+                                <i class="fa-solid fa-location-dot"></i>
+                            </div>
+                            <div class="w-100">
+                                <p>Impelsys Inc. 1115 Broadway, 12th Floor, New York, NY 10010 US</p>
+                            </div>
+                        </div>
+                        <div class="co-case-line"></div>
+                        <p><span>Phone:</span> +1 475-666-0280</p>
+                        <p><span>Fax:</span> +1 917 591 9536</p>
+                        <a href="https://www.google.com/maps/place/1115+Broadway+12th+fl,+New+York,+NY+10010,+USA/@40.7431251,-73.9897521,17z/data=!3m1!4b1!4m6!3m5!1s0x89c259a4307aaaab:0x46625fe9fd64e26f!8m2!3d40.7431251!4d-73.9897521!16s%2Fg%2F11qpw1dc4_?entry=ttu" target="_blank" data-faitracker-click-bind="true">Find us on map</a>
+                    </div>
+                </div>
+            </div>
+            <div class="co-model-card">
+                <div class="co-card-main">
+                    <img class="co-img-fluid" src="https://impelsys.com/wp-content/uploads/2025/10/locations-02.webp" alt="New York &lt;span&gt;(HQ)&lt;/span&gt;, USA">
+                    <div class="co-location-content">
+                        <h4>Bangalore, India</h4>
+                        <div class="co-address-text">
+                            <div class="co-map-icon">
+                                <i class="fa-solid fa-location-dot"></i>
+                            </div>
+                            <div class="w-100">
+                                <p>Impelsys Private Limited, IWF Campus, Tower A, Survey.No.192, Whitefield Main Rd, Mahadevapura, Bengaluru- 560048 India</p>
+                            </div>
+                        </div>
+                        <div class="co-case-line"></div>
+                        <p><span>Phone:</span> +1 475-666-0280</p>
+                        <p><span>Fax:</span> +1 917 591 9536</p>
+                        <a href="https://www.google.com/maps/place/1115+Broadway+12th+fl,+New+York,+NY+10010,+USA/@40.7431251,-73.9897521,17z/data=!3m1!4b1!4m6!3m5!1s0x89c259a4307aaaab:0x46625fe9fd64e26f!8m2!3d40.7431251!4d-73.9897521!16s%2Fg%2F11qpw1dc4_?entry=ttu" target="_blank" data-faitracker-click-bind="true">Find us on map</a>
+                    </div>
+                </div>
+            </div>
+            <div class="co-model-card">
+                <div class="co-card-main">
+                    <img class="co-img-fluid" src="https://impelsys.com/wp-content/uploads/2025/10/locations-03.webp" alt="New York &lt;span&gt;(HQ)&lt;/span&gt;, USA">
+                    <div class="co-location-content">
+                        <h4>Mangalore, India</h4>
+                        <div class="co-address-text">
+                            <div class="co-map-icon">
+                                <i class="fa-solid fa-location-dot"></i>
+                            </div>
+                            <div class="w-100">
+                                <p>Impelsys Private Limited, Spectrum Towers, 16-1-32/1 , Balmata Road, Bendoorwell, Mangalore, Karnataka 575002 India</p>
+                            </div>
+                        </div>
+                        <div class="co-case-line"></div>
+                        <p><span>Phone:</span> +1 475-666-0280</p>
+                        <p><span>Fax:</span> +1 917 591 9536</p>
+                        <a href="https://www.google.com/maps/place/1115+Broadway+12th+fl,+New+York,+NY+10010,+USA/@40.7431251,-73.9897521,17z/data=!3m1!4b1!4m6!3m5!1s0x89c259a4307aaaab:0x46625fe9fd64e26f!8m2!3d40.7431251!4d-73.9897521!16s%2Fg%2F11qpw1dc4_?entry=ttu" target="_blank" data-faitracker-click-bind="true">Find us on map</a>
+                    </div>
+                </div>
+            </div>
+            <div class="co-model-card">
+                <div class="co-card-main">
+                    <img class="co-img-fluid" src="https://impelsys.com/wp-content/uploads/2025/10/locations-04.webp" alt="New York &lt;span&gt;(HQ)&lt;/span&gt;, USA">
+                    <div class="co-location-content">
+                        <h4>Porto, Portugal</h4>
+                        <div class="co-address-text">
+                            <div class="co-map-icon">
+                                <i class="fa-solid fa-location-dot"></i>
+                            </div>
+                            <div class="w-100">
+                                <p>The Brasilia Building, Praça de Mouzinho de Albuquerque, 4100-359 Porto, Portugal</p>
+                            </div>
+                        </div>
+                        <div class="co-case-line"></div>
+                        <p><span>Phone:</span> +1 475-666-0280</p>
+                        <p><span>Fax:</span> +1 917 591 9536</p>
+                        <a href="https://www.google.com/maps/place/1115+Broadway+12th+fl,+New+York,+NY+10010,+USA/@40.7431251,-73.9897521,17z/data=!3m1!4b1!4m6!3m5!1s0x89c259a4307aaaab:0x46625fe9fd64e26f!8m2!3d40.7431251!4d-73.9897521!16s%2Fg%2F11qpw1dc4_?entry=ttu" target="_blank" data-faitracker-click-bind="true">Find us on map</a>
+                    </div>
+                </div>
+            </div>
+            <div class="co-model-card">
+                <div class="co-card-main">
+                    <img class="co-img-fluid" src="https://impelsys.com/wp-content/uploads/2025/10/locations-05.webp" alt="New York &lt;span&gt;(HQ)&lt;/span&gt;, USA">
+                    <div class="co-location-content">
+                        <h4>Bogota, Colombia</h4>
+                        <div class="co-address-text">
+                            <div class="co-map-icon">
+                                <i class="fa-solid fa-location-dot"></i>
+                            </div>
+                            <div class="w-100">
+                                <p>Bogota, Colombia</p>
+                            </div>
+                        </div>
+                        <div class="co-case-line"></div>
+                        <p><span>Phone:</span> +1 475-666-0280</p>
+                        <p><span>Fax:</span> +1 917 591 9536</p>
+                        <a href="https://www.google.com/maps/place/1115+Broadway+12th+fl,+New+York,+NY+10010,+USA/@40.7431251,-73.9897521,17z/data=!3m1!4b1!4m6!3m5!1s0x89c259a4307aaaab:0x46625fe9fd64e26f!8m2!3d40.7431251!4d-73.9897521!16s%2Fg%2F11qpw1dc4_?entry=ttu" target="_blank" data-faitracker-click-bind="true">Find us on map</a>
+                    </div>
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <footer class="site-footer">
+        <section>
+            <span>Powered by Impelsys</span>
+            <span>&copy; 2026 All rights reserved.</span>
+            <span><a href="#">Privacy Policy</a></span>
+        </section>
+    </footer>
 </body>
 </html>
