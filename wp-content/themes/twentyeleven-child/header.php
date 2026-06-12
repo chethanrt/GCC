@@ -31,9 +31,6 @@
 
 	wp_title( '|', true, 'right' );
 
-	// Add the site name.
-	//bloginfo( 'name' );
-
 	// Add the site description for the home/front page.
 	$site_description = get_bloginfo( 'description', 'display' );
 if ( $site_description && ( is_home() || is_front_page() ) ) {
@@ -126,7 +123,7 @@ if(@$post->ID == 6) { ?>
   "@type": "Organization",
   "name": "Monk",
   "url": "<?=site_url('/')?>",
-  "logo": "<?=site_url('/wp-content/themes/twentyeleven-child/assets/xs.png')?>",
+  "logo": "<?=site_url('/wp-content/themes/twentyeleven-child/assets/impelsys-logo-final-1.png')?>",
   "sameAs": [
     "https://www.facebook.com/Impelsys.inc/",
     "https://twitter.com/Impelsys?ref_src=twsrc%5Egoogle%7Ctwcamp%5Eserp%7Ctwgr%5Eauthor",
@@ -167,31 +164,70 @@ if( @$post->ID == 112) { ?>
 <?php } ?>
 
 <?php wp_body_open(); ?>
+	<header>
+		<nav>
+			<div class="wrapper">
+				<div class="logo">
+					<a href="<?php echo home_url('/'); ?>">
+						<img src="<?php echo get_stylesheet_directory_uri(); ?>/assets/impelsys-logo-final-1.png" alt="Impelsys">
+					</a>
+				</div>
 
-	
-		 <nav>
-    <div class="wrapper">
-      <div class="logo"><a href="<?php echo home_url('/'); ?>"><img src="<?php echo get_stylesheet_directory_uri(); ?>/assets/impelsys-logo-final-1.png" alt=""></a></div>
-  
-     <!-- <input type="radio" name="slider" id="menu-btn">
-      <input type="radio" name="slider" id="close-btn">
-  
-    
-       <?php
-            $defaults = array(
-                            'theme_location'  => '',
-                            'menu'            => 'menu 1',
-                            'container'       => 'false',
-                            'menu_class'      => 'nav-links',
-                            'menu_id'         => '',
-                            'echo'            => true,
-                            'fallback_cb'     => 'wp_page_menu',
-                             'after'           => '',       
-                            'items_wrap'      => '<ul id="%1$s" class="%2$s"><label for="close-btn" class="btn close-btn"><i class="fas fa-times"></i></label>%3$s</ul><label for="menu-btn" class="btn menu-btn"><i class="fas fa-bars"></i></label><label for="close-btn" class="btn close-btn"><i class="fas fa-times"></i></label>',
-                        );
-            // wp_nav_menu($defaults); ?> -->
-     </div>
-  </nav>
+				<ul id="menu-menu-1" class="nav-links">
+					<li class="menu-item"><a href="<?php echo esc_url(home_url('/')); ?>">What Sets Us Apart</a></li>
+					<li class="menu-item"><a href="<?php echo esc_url(home_url('/engagement-models/')); ?>">Engagement Models</a></li>
+					<li class="menu-item"><a href="<?php echo esc_url(home_url('/')); ?>">Our Team</a></li>
+					<li class="menu-item"><a href="<?php echo esc_url(home_url('/insights/')); ?>">Insights</a></li>
+					<li class="menu-item contact-btn"><a href="<?php echo esc_url(home_url('/contact-us/')); ?>">Contact Us</a></li>
+				</ul>
+
+				<label for="close-btn" class="btn close-btn"><i class="fa fa-times"></i></label>
+				<span class="btn menu-btn" id="menu-btn"><i class="fas fa-bars"></i></span>
+			</div>
+		</nav>
+	</header>
+	<div class="nav-overlay" id="nav-overlay"></div>
+
+	<script>
+		document.addEventListener('DOMContentLoaded', function () {
+			const menuBtn = document.getElementById('menu-btn');
+			const navLinks = document.querySelector('.nav-links');
+			const overlay = document.getElementById('nav-overlay');
+			const closeBtn = document.querySelector('.close-btn');
+
+			if (!menuBtn || !navLinks) {
+				return;
+			}
+
+			function openMenu() {
+				navLinks.classList.add('open');
+				if (overlay) {
+					overlay.classList.add('open');
+				}
+				menuBtn.innerHTML = '<i class="fas fa-times"></i>';
+			}
+
+			function closeMenu() {
+				navLinks.classList.remove('open');
+				if (overlay) {
+					overlay.classList.remove('open');
+				}
+				menuBtn.innerHTML = '<i class="fas fa-bars"></i>';
+			}
+
+			menuBtn.addEventListener('click', function () {
+				navLinks.classList.contains('open') ? closeMenu() : openMenu();
+			});
+
+			if (closeBtn) {
+				closeBtn.addEventListener('click', closeMenu);
+			}
+
+			if (overlay) {
+				overlay.addEventListener('click', closeMenu);
+			}
+		});
+	</script>
 				<?php //get_search_form(); ?>
 			
 				
