@@ -1,0 +1,225 @@
+body {
+    margin: 0;
+}
+@font-face {
+    font-family: 'Sailec Medium';
+    src: url(../fonts/Sailec-Medium.ttf);
+    font-display: swap;
+}
+@font-face {
+    font-family: 'Sailec Bold';
+    src: url(../fonts/Sailec-Bold.ttf);
+    font-display: swap;
+}
+@font-face {
+    font-family: 'Sailec Light';
+    src: url(../fonts/Sailec-Light.ttf);
+    font-display: swap;
+}
+header {
+    position: sticky;
+    top: 0;
+    z-index: 9;
+}
+nav {
+    position: relative;
+    z-index: 99;
+    width: 100%;
+    top: 0;
+    background: #0F0F33;
+}
+nav .wrapper {
+    position: relative;
+    max-width: 1200px;
+    padding: 0px 30px;
+    height: 76px;
+    line-height: 70px;
+    margin: auto;
+    display: flex;
+    align-items: baseline;
+    justify-content: space-between;
+}
+nav .wrapper {
+    max-width: 90%;
+}
+.wrapper .logo a {
+    color: #f2f2f2;
+    font-size: 30px;
+    font-weight: 600;
+    text-decoration: none;
+}
+.logo img {
+    width: 225px;
+    vertical-align: middle;
+}
+nav input {
+    display: none;
+}
+.wrapper .nav-links {
+    display: inline-flex;
+    margin-bottom: 0;
+}
+.wrapper:has(.nav-links.open) .close-btn {
+    display: block;
+}
+.wrapper:has(.nav-links.open) .menu-btn {
+    display: none;
+}
+ul#menu-menu-1 .close-btn {
+    display: none;
+}
+.wrapper .btn.close-btn {
+    position: absolute;
+    right: 30px;
+    top: 10px;
+}
+.wrapper .btn {
+    color: #fff;
+    font-size: 20px;
+    cursor: pointer;
+    display: none;
+}
+ul#menu-menu-1 li>a {
+    border: unset;
+    color: #fff;
+    letter-spacing: 1px;
+    font-size: 16px !important;
+    border-radius: 5px;
+    text-decoration: none;
+}
+.nav-links li a {
+    font-size: 12px;
+    font-weight: 500;
+    padding: 5px 10px;
+    height: 25px;
+    display: flex;
+    align-items: center;
+    font-family: 'Sailec Medium';
+}
+.nav-links li {
+    list-style: none;
+}
+li.contact-btn a {
+    position: relative;
+    text-align: center;
+    font-size: 16px;
+    letter-spacing: 1px;
+    text-decoration: none;
+    color: #4A4A4A !important;
+    background: #8BD440;
+    cursor: pointer;
+    /* transition: ease-out .5s;
+    -webkit-transition: ease-out .5s;
+    -moz-transition: ease-out .5s; */
+}
+
+li.contact-btn a:hover {
+    color: #fff !important;
+}
+
+.btn {
+    display: inline-block;
+    font-weight: 400;
+    line-height: 1.5;
+    color: #212529;
+    text-align: center;
+    text-decoration: none;
+    vertical-align: middle;
+    cursor: pointer;
+    -webkit-user-select: none;
+    -moz-user-select: none;
+    user-select: none;
+    background-color: transparent;
+    border: 1px solid transparent;
+    padding: .375rem .75rem;
+    font-size: 1rem;
+    border-radius: .25rem;
+    transition: color .15s ease-in-out, background-color .15s ease-in-out, border-color .15s ease-in-out, box-shadow .15s ease-in-out;
+}
+.fa, .fas {
+    font-weight: 900;
+}
+@media screen and (min-width: 1200px) {
+    nav {
+        padding: 10px 0;
+    }
+}
+@media (min-width: 992px) {
+    .nav-links li {
+        margin: 0 7px;
+    }
+}
+@media screen and (max-width: 1200px) {
+    nav .wrapper .logo {
+        z-index: 99;
+    }
+    .wrapper .nav-links {
+        width: 100%;
+        max-width: 100%;
+        position: fixed;
+        height: 100vh;
+        top: 0;
+        padding: 50px 0px;
+        left: -100%;
+        background: #0F0F33;
+        display: block;
+        line-height: 50px;
+        overflow-y: auto;
+        box-shadow: 0px 15px 15px rgba(0, 0, 0, 0.18);
+        transition: left 0.3s ease;
+        z-index: 1000;
+    }
+    .nav-links li {
+        background: #fff;
+    }
+    ul#menu-menu-1 li>a {
+        justify-content: center;
+        color: #4A4A4A;
+        padding: 15px 10px;
+    }
+    .wrapper .nav-links.open {
+        left: 0;
+        padding: 0px;
+        margin-top: 70px;
+    }
+    .nav-overlay {
+        display: none;
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        background: rgba(0, 0, 0, 0.5);
+        z-index: 999;
+    }
+    .nav-overlay.open {
+        display: block;
+    }
+    .wrapper .btn.menu-btn {
+        position: absolute;
+        right: 25px;
+        top: 50%;
+        transform: translateY(-50%);
+        z-index: 1001;
+        display: block;
+        color: #fff;
+        font-size: 22px;
+        cursor: pointer;
+        background: none;
+        border: none;
+        padding: 0;
+    }
+    .nav-links {
+        display: none;
+    }
+    .nav-links.open {
+        display: block !important;
+    }
+    #menu-btn:checked~.btn.close-btn {
+        display: block;
+    }
+    .wrapper .btn.close-btn {
+        right: 15px;
+        top: 15px;
+    }
+}

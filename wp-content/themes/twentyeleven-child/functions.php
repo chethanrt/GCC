@@ -158,12 +158,77 @@ add_action('init', function () {
 
 
 
+class Header_Nav_Walker extends Walker_Nav_Menu {
+    public function start_el( &$output, $data_object, $depth = 0, $args = null, $current_object_id = 0 ) {
+        $item = $data_object;
+        $classes = empty( $item->classes ) ? [] : (array) $item->classes;
+
+        // Mark the last top-level item as the CTA/contact button
+        if ( isset( $args->walker->max_pages ) ) {
+            // fallback: rely on CSS or menu item class set in WP admin
+        }
+
+        $class_names = implode( ' ', array_filter( array_map( 'esc_attr', $classes ) ) );
+        $class_attr  = $class_names ? ' class="' . $class_names . '"' : '';
+
+        $output .= '<li' . $class_attr . '>';
+
+        $atts           = [];
+        $atts['href']   = ! empty( $item->url ) ? $item->url : '#';
+        $atts['target'] = ! empty( $item->target ) ? $item->target : '';
+        $atts['rel']    = ! empty( $item->xfn ) ? $item->xfn : '';
+
+        $attributes = '';
+        foreach ( $atts as $attr => $value ) {
+            if ( '' !== $value ) {
+                $attributes .= ' ' . $attr . '="' . esc_attr( $value ) . '"';
+            }
+        }
+
+        $title   = apply_filters( 'the_title', $item->title, $item->ID );
+        $output .= '<a' . $attributes . '>' . $title . '</a>';
+    }
+}
+
+
+
 function my_template_styles() {
 
-    if (is_page_template('template-our-team.php')) {
+    // Parent theme stylesheet
+    wp_enqueue_style(
+        'parent-style',
+        get_template_directory_uri() . '/style.css'
+    );
 
-        echo '<!-- TEMPLATE DETECTED -->';
+    // Child theme stylesheet
+    wp_enqueue_style(
+        'child-style',
+        get_stylesheet_directory_uri() . '/style.css',
+        [ 'parent-style' ],
+        time()
+    );
 
+    // Font Awesome
+    wp_enqueue_style(
+        'font-awesome',
+        'https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css'
+    );
+
+    wp_enqueue_style(
+        'header-css',
+        get_stylesheet_directory_uri() . '/assets/css/header.css',
+        [],
+        time()
+    );
+
+    wp_enqueue_style(
+        'footer-css',
+        get_stylesheet_directory_uri() . '/assets/css/footer.css',
+        [],
+        time()
+    );
+
+    if ( is_page_template( 'template-our-team.php' ) ) {
         wp_enqueue_style(
             'our-team-css',
             get_stylesheet_directory_uri() . '/assets/css/our-team.css',
@@ -171,8 +236,17 @@ function my_template_styles() {
             time()
         );
     }
+
+    if ( is_page_template( 'template-engagement-models.php' ) ) {
+        wp_enqueue_style(
+            'engagement-models-css',
+            get_stylesheet_directory_uri() . '/assets/css/engagement-models.css',
+            [],
+            time()
+        );
+    }
 }
-add_action('wp_enqueue_scripts', 'my_template_styles');
+add_action( 'wp_enqueue_scripts', 'my_template_styles' );
 
 
 ?>

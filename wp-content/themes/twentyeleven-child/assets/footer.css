@@ -1,0 +1,27 @@
+.site-footer {
+    background: #0F0F33;
+}
+.site-footer section {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    color: #fff;
+    padding: 16px 30px;
+    font-family: 'Sailec Medium';
+    font-size: 1rem;
+    max-width: 90%;
+    margin: 0 auto;
+}
+
+.site-footer a {
+    color: #fff;
+    text-decoration: none;
+}
+@media (max-width: 767px) {
+    .site-footer section {
+        flex-direction: column;
+        justify-self: center;
+        align-items: center;
+        gap: 10px;
+    }
+}
