@@ -265,6 +265,22 @@ textarea.form-control:not(:placeholder-shown) + label {
     color: #005900;
 }
 
+.error-message {
+    display: block;
+    color: #dc3545;
+    font-size: 12px;
+    font-family: 'Sailec Medium';
+    margin-top: 5px;
+}
+
+.form-control.error {
+    border-color: #dc3545;
+}
+
+.form-control.valid {
+    border-color: #28a745;
+}
+
 .submit-btn {
     background: #005900;
     color: #fff;
@@ -534,5 +550,3 @@ textarea.form-control:not(:placeholder-shown) + label {
         max-width: 100%;
     }
 }
-
-

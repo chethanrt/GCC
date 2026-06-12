@@ -92,37 +92,43 @@
         <section class="contact-form">
             <div class="contact-form-container">
                 <h2>Fill in the form below and we’ll get in touch with you.</h2>
-                <form class="form-wrapper">
+                <form class="form-wrapper" novalidate>
                     <div class="form-row three-fields">
                         <div class="form-group">
-                            <input type="text" id="name" class="form-control" placeholder="Full Name" required>
+                            <input type="text" id="name" class="form-control field-required" placeholder="Full Name" required>
                             <label for="name">First Name<span class="require-label">*</span></label>
+                            <span class="error-message"></span>
                         </div>
                         <div class="form-group">
-                            <input type="email" id="email" class="form-control" placeholder="Email Address" required>
+                            <input type="email" id="email" class="form-control field-required" placeholder="Email Address" required>
                             <label for="email">Email Address<span class="require-label">*</span></label>
+                            <span class="error-message"></span>
                         </div>
                         <div class="form-group">
                             <input type="tel" id="phone" class="form-control" placeholder="Phone Number" required>
                             <label for="phone">Mobile</label>
+                            <span class="error-message"></span>
                         </div>
                     </div>
 
                     <div class="form-row">
                         <div class="form-group">
-                            <input type="tel" id="company-name" class="form-control" placeholder="Phone Number" required>
-                            <label for="phone">Company Name<span class="require-label">*</span></label>
+                            <input type="text" id="company-name" class="form-control field-required" placeholder="Phone Number" required>
+                            <label for="company-name">Company Name<span class="require-label">*</span></label>
+                            <span class="error-message"></span>
                         </div>
                         <div class="form-group">
-                            <input type="text" id="subject" class="form-control" placeholder="Subject" required>
+                            <input type="text" id="subject" class="form-control field-required" placeholder="Subject" required>
                             <label for="subject">What can we help you with?<span class="require-label">*</span></label>
+                            <span class="error-message"></span>
                         </div>
                     </div>
 
                     <div class="form-row">
                         <div class="form-group full-width">
-                            <textarea id="message" class="form-control" placeholder="Your Message" rows="5" required></textarea>
+                            <textarea id="message" class="form-control field-required" placeholder="Your Message" rows="5" required></textarea>
                             <label for="message">Additional Details<span class="require-label">*</span></label>
+                            <span class="error-message"></span>
                         </div>
                     </div>
 

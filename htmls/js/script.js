@@ -24,4 +24,72 @@ jQuery(document).ready(function ($) {
         closeMenu();
     });
 
+    // form validation
+    $('.form-wrapper').on('submit', function (e) {
+        let isValid = true;
+
+        $('.error-message').text('');
+        $('.form-control').removeClass('error');
+
+        // Required fields
+        $('.field-required').each(function () {
+
+            if (!$(this).val().trim()) {
+
+                $(this).addClass('error');
+
+                $(this)
+                    .siblings('.error-message')
+                    .text('This field is required');
+
+                isValid = false;
+            }
+        });
+
+        // Email validation
+        const email = $('#email').val().trim();
+        const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+
+        if (email && !emailRegex.test(email)) {
+
+            $('#email')
+                .addClass('error')
+                .siblings('.error-message')
+                .text('Please enter a valid email address');
+
+            isValid = false;
+        }
+
+        // Mobile validation
+        const phone = $('#phone').val().trim();
+        const phoneRegex = /^[6-9]\d{9}$/;
+
+        if (phone && !phoneRegex.test(phone)) {
+
+            $('#phone')
+                .addClass('error')
+                .siblings('.error-message')
+                .text('Please enter a valid 10-digit mobile number');
+
+            isValid = false;
+        }
+
+        // Terms validation
+        $('.terms-error').remove();
+
+        if (!$('#terms').is(':checked')) {
+
+            $('.checkbox-group').append(
+                '<span class="error-message terms-error">Please accept the Terms & Conditions</span>'
+            );
+
+            isValid = false;
+        }
+
+        if (!isValid) {
+            e.preventDefault();
+        }
+    });
+    // form validation
+
 });
