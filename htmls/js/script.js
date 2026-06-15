@@ -93,24 +93,27 @@ jQuery(document).ready(function ($) {
     // form validation
 
 
-    $('#ytThumb').click(function () {
+    const videoUrl = "https://www.youtube.com/embed/2oCvmf3cUR0?autoplay=1";
 
+    window.openVideoPopup = function () {
+        $("#videoModal").show();
+        $("#youtubeVideo").attr("src", videoUrl);
+    };
 
-        $('#ytFrame').attr(
-            'src',
-            'https://www.youtube.com/embed/EngW7tLk6R8?autoplay=1'
-        );
+    window.closeVideoPopup = function () {
+        $("#videoModal").hide();
+        $("#youtubeVideo").attr("src", "");
+    };
 
-        $('#videoModal').fadeIn();
+    // Open popup when thumbnail is clicked
+    $("#videoThumb").on("click", function () {
+        openVideoPopup();
     });
 
-    $('.video-close, #videoModal').click(function (e) {
-
-        if ($(e.target).is('#videoModal, .video-close')) {
-
-            $('#videoModal').fadeOut(function () {
-                $('#ytFrame').attr('src', '');
-            });
+    // Close popup when clicking outside the video
+    $("#videoModal").on("click", function (e) {
+        if ($(e.target).is("#videoModal")) {
+            closeVideoPopup();
         }
     });
 
