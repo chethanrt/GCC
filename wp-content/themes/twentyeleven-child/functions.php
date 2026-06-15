@@ -245,6 +245,15 @@ function my_template_styles() {
             time()
         );
     }
+
+     if ( is_page_template( 'template-wsua.php' ) ) {
+        wp_enqueue_style(
+            'wsua-css',
+            get_stylesheet_directory_uri() . '/assets/css/wsua.css',
+            [],
+            time()
+        );
+    }
 }
 add_action( 'wp_enqueue_scripts', 'my_template_styles' );
 
