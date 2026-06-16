@@ -97,14 +97,22 @@ add_filter('set_cookie_options', function ($options) {
 });
 
 // Prevent Clickjacking by setting CSP and X-Frame-Options
+// Skip on REST API and admin requests to avoid blocking the block editor
 add_action('send_headers', 'impelsysgcc_set_clickjacking_headers');
 function impelsysgcc_set_clickjacking_headers() {
-    // For modern browsers: only allow your own domain to frame your site
+    if ( defined('REST_REQUEST') && REST_REQUEST ) return;
+    if ( is_admin() ) return;
     header("Content-Security-Policy: frame-ancestors 'self'");
-    
-    // For older browsers: deny all framing
-    header("X-Frame-Options: DENY");
+    header("X-Frame-Options: SAMEORIGIN");
 }
+
+// Use Classic Editor for pages and posts (avoids REST API save issues with ACF)
+add_filter( 'use_block_editor_for_post_type', function( $use, $post_type ) {
+    if ( in_array( $post_type, array( 'page', 'post' ), true ) ) {
+        return false;
+    }
+    return $use;
+}, 10, 2 );
 
 // Prevent password reset flooding from both frontend and backend (admin)
 add_filter('retrieve_password_message', function ($message, $key, $user_login, $user_data) {
@@ -263,6 +271,35 @@ function my_template_styles() {
             time()
         );
     }
+
+    if ( is_page_template( 'template-insights.php' ) ) {
+        wp_enqueue_style(
+            'insights-css',
+            get_stylesheet_directory_uri() . '/assets/css/insights.css',
+            [],
+            '1.0'
+        );
+        wp_enqueue_script(
+            'insights-js',
+            get_stylesheet_directory_uri() . '/assets/js/insights.js',
+            [ 'jquery' ],
+            '1.0',
+            true
+        );
+        wp_localize_script( 'insights-js', 'insightsAjax', array(
+            'ajaxurl' => admin_url( 'admin-ajax.php' ),
+            'nonce'   => wp_create_nonce( 'insights_load_more_nonce' ),
+        ) );
+    }
+
+    if ( is_singular( 'post' ) && has_category( 'insights' ) ) {
+        wp_enqueue_style(
+            'insights-detail-css',
+            get_stylesheet_directory_uri() . '/assets/css/insights-detail.css',
+            [],
+            '1.0'
+        );
+    }
 }
 add_action( 'wp_enqueue_scripts', 'my_template_styles' );
 
@@ -299,5 +336,51 @@ function theme_enqueue_scripts() {
 }
 add_action('wp_enqueue_scripts', 'theme_enqueue_scripts');
 
+function insights_load_more_handler() {
+    check_ajax_referer( 'insights_load_more_nonce', 'nonce' );
 
-?>
+    $page = isset( $_POST['page'] ) ? absint( $_POST['page'] ) : 2;
+    $ppp  = isset( $_POST['ppp'] )  ? absint( $_POST['ppp'] )  : 6;
+
+    $query = new WP_Query( array(
+        'post_type'      => 'post',
+        'category_name'  => 'insights',
+        'posts_per_page' => $ppp,
+        'paged'          => $page,
+        'post_status'    => 'publish',
+        'orderby'        => 'date',
+        'order'          => 'DESC',
+    ) );
+
+    if ( ! $query->have_posts() ) {
+        wp_send_json_error();
+    }
+
+    ob_start();
+    while ( $query->have_posts() ) : $query->the_post();
+        $thumb   = get_the_post_thumbnail_url( get_the_ID(), 'large' );
+        $excerpt = wp_trim_words( get_the_excerpt(), 20, '…' );
+    ?>
+        <div class="in-model-card">
+            <a class="in-card" href="<?php the_permalink(); ?>"
+                <?php if ( $thumb ) : ?>style="background-image:url('<?php echo esc_url( $thumb ); ?>');"<?php endif; ?>>
+                <div class="in-card-body">
+                    <h5 class="in-card-title"><?php the_title(); ?></h5>
+                </div>
+                <div class="in-card-body2">
+                    <div class="in-comment">
+                        <?php if ( $excerpt ) : ?>
+                            <p class="in-card-text"><?php echo esc_html( $excerpt ); ?></p>
+                        <?php endif; ?>
+                    </div>
+                </div>
+            </a>
+        </div>
+    <?php endwhile;
+    wp_reset_postdata();
+    $html = ob_get_clean();
+
+    wp_send_json_success( array( 'html' => $html ) );
+}
+add_action( 'wp_ajax_insights_load_more', 'insights_load_more_handler' );
+add_action( 'wp_ajax_nopriv_insights_load_more', 'insights_load_more_handler' );
