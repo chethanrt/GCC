@@ -44,7 +44,24 @@ function monk_post_types()
     )
   );
 
-  
+  register_post_type(
+    'insights',
+    array(
+      'show_in_rest' => true,
+      'supports'     => array('title', 'editor', 'thumbnail', 'excerpt'),
+      'rewrite'      => array('slug' => 'insight'),
+      'has_archive'  => false,
+      'public'       => true,
+      'labels'       => array(
+        'name'          => 'Insights',
+        'singular_name' => 'Insight',
+        'add_new_item'  => 'Add New Insight',
+        'edit_item'     => 'Edit Insight',
+        'all_items'     => 'All Insights',
+      ),
+      'menu_icon' => 'dashicons-lightbulb',
+    )
+  );
 
 }
 
