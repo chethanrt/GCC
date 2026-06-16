@@ -337,19 +337,23 @@ function theme_enqueue_scripts() {
 add_action('wp_enqueue_scripts', 'theme_enqueue_scripts');
 
 function insights_load_more_handler() {
-    check_ajax_referer( 'insights_load_more_nonce', 'nonce' );
+    $nonce = isset( $_POST['nonce'] ) ? sanitize_text_field( $_POST['nonce'] ) : '';
+    if ( ! wp_verify_nonce( $nonce, 'insights_load_more_nonce' ) ) {
+        wp_send_json_error( array( 'message' => 'Invalid nonce' ) );
+    }
 
     $page = isset( $_POST['page'] ) ? absint( $_POST['page'] ) : 2;
     $ppp  = isset( $_POST['ppp'] )  ? absint( $_POST['ppp'] )  : 6;
 
     $query = new WP_Query( array(
-        'post_type'      => 'post',
-        'category_name'  => 'insights',
-        'posts_per_page' => $ppp,
-        'paged'          => $page,
-        'post_status'    => 'publish',
-        'orderby'        => 'date',
-        'order'          => 'DESC',
+        'post_type'           => 'post',
+        'category_name'       => 'insights',
+        'posts_per_page'      => $ppp,
+        'paged'               => $page,
+        'post_status'         => 'publish',
+        'orderby'             => 'date',
+        'order'               => 'DESC',
+        'ignore_sticky_posts' => 1,
     ) );
 
     if ( ! $query->have_posts() ) {

@@ -6,6 +6,7 @@ main {
 .in-hero {
     /* margin-top: 76px; */
     height: 440px;
+    background-image: url('../images/insights-banner.png');
     background-size: cover;
     background-position: bottom;
     background-repeat: no-repeat;

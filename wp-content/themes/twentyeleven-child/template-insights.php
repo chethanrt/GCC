@@ -10,30 +10,24 @@ get_header();
 
     <!-- Hero Section -->
     <section class="in-hero"
-        <?php
-        $hero_bg = get_field('hero_background_image');
-        if ($hero_bg) : ?>
-            style="background-image:url('<?php echo esc_url($hero_bg['url']); ?>');"
-        <?php endif; ?>
-    >
-        <div class="in-hero-overlay">
-            <h1><?php the_field('hero_title'); ?><?php if (get_field('hero_subtitle')) : ?> <span class="in-green"><?php the_field('hero_subtitle'); ?></span><?php endif; ?></h1>
-            <?php if (get_field('hero_description')) : ?>
-                <p class="in-hero-desc"><?php the_field('hero_description'); ?></p>
-            <?php endif; ?>
-        </div>
+><div class="in-hero-overlay">
+            <h1><span class="in-green"><?php the_field('hero_title'); ?></span></h1>
+           <p class="in-hero-desc"><?php the_field('hero_description'); ?></p>
+           </div>
     </section>
 
     <!-- Cards Section -->
     <?php
     $ppp = 6;
     $args = array(
-        'post_type'      => 'post',
-        'category_name'  => 'insights',
-        'posts_per_page' => $ppp,
-        'post_status'    => 'publish',
-        'orderby'        => 'date',
-        'order'          => 'DESC',
+        'post_type'           => 'post',
+        'category_name'       => 'insights',
+        'posts_per_page'      => $ppp,
+        'paged'               => 1,
+        'post_status'         => 'publish',
+        'orderby'             => 'date',
+        'order'               => 'DESC',
+        'ignore_sticky_posts' => 1,
     );
     $query = new WP_Query($args);
     ?>
