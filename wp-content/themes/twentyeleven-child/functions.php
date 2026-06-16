@@ -254,8 +254,50 @@ function my_template_styles() {
             time()
         );
     }
+
+    if ( is_page_template( 'home.php' ) ) {
+        wp_enqueue_style(
+            'home-css',
+            get_stylesheet_directory_uri() . '/assets/css/home.css',
+            [],
+            time()
+        );
+    }
 }
 add_action( 'wp_enqueue_scripts', 'my_template_styles' );
+
+
+
+function theme_enqueue_scripts() {
+
+    // jQuery (WordPress version)
+    wp_enqueue_script('jquery');
+
+    // Slick CSS
+    wp_enqueue_style(
+        'slick-css',
+        'https://cdn.jsdelivr.net/npm/slick-carousel@1.8.1/slick/slick.css'
+    );
+
+    // Slick JS
+    wp_enqueue_script(
+        'slick-js',
+        'https://cdn.jsdelivr.net/npm/slick-carousel@1.8.1/slick/slick.min.js',
+        array('jquery'),
+        null,
+        true
+    );
+
+    // Your custom script (IMPORTANT: depends on slick)
+    wp_enqueue_script(
+        'theme-home',
+        get_stylesheet_directory_uri() . '/assets/js/home.js',
+        array('jquery', 'slick-js'),
+        null,
+        true
+    );
+}
+add_action('wp_enqueue_scripts', 'theme_enqueue_scripts');
 
 
 ?>
