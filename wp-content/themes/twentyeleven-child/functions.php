@@ -288,6 +288,15 @@ function theme_enqueue_scripts() {
         true
     );
 
+     wp_enqueue_script(
+        'theme-script',
+        get_stylesheet_directory_uri() . '/assets/js/script.js',
+        array('jquery'),
+        null,
+        true
+    );
+
+    
     // Your custom script (IMPORTANT: depends on slick)
     wp_enqueue_script(
         'theme-home',

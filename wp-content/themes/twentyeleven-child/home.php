@@ -19,33 +19,28 @@ get_header();
                     <img src="https://impelsysgcc.com/wp-content/uploads/2026/06/360-Pact.jpg" class="desktop-b" alt="360 Pact">
                     <img src="https://impelsysgcc.com/wp-content/uploads/2026/06/360-Pact-mobile-view.png" class="mobile-b" alt="360 Pact">
                 </div> -->
-                <?php while (have_rows('banner_slider_details')) : the_row();
+              <?php while (have_rows('banner_slider_details')) : the_row();
 
-            $desktop_img = get_sub_field('banner_image');
-            $mobile_img  = get_sub_field('mobile_image');
+    $desktop_img = get_sub_field('banner_image');
+    $mobile_img  = get_sub_field('mobile_image');
 
-            $big_title = get_sub_field('banner_big_title');
-            $content   = get_sub_field('banner_content');
-            $btn_text  = get_sub_field('banner_button_text');
-            $btn_link  = get_sub_field('banner_button_link');
-            $video_url = get_sub_field('banner_video_url');
+?>
+    <div class="banner-slide">
 
-        ?>
-               
-                  <div>
-               
-                <img src="<?php echo esc_url($desktop_img['url']); ?>"
-                     alt="<?php echo esc_attr($desktop_img['alt']); ?>"
-                     class="desktop-b">
-            
-             
-                <img src="<?php echo esc_url($mobile_img['url']); ?>"
-                     alt="<?php echo esc_attr($mobile_img['alt']); ?>"
-                     class="mobile-b">
-          
-                </div>
+        <?php if (!empty($desktop_img)) : ?>
+            <img src="<?php echo esc_url($desktop_img['url']); ?>"
+                 alt="<?php echo esc_attr($desktop_img['alt']); ?>"
+                 class="desktop-b">
+        <?php endif; ?>
 
- <?php endwhile; ?>
+        <?php if (!empty($mobile_img)) : ?>
+            <img src="<?php echo esc_url($mobile_img['url']); ?>"
+                 alt="<?php echo esc_attr($mobile_img['alt']); ?>"
+                 class="mobile-b">
+        <?php endif; ?>
+
+    </div>
+<?php endwhile; ?>
 
              </div>
                 
@@ -111,14 +106,11 @@ if ($hero) :
 
             <!-- LEFT: VIDEO THUMBNAIL -->
             <div class="col-md-6">
-                        <div class="home-img video-thumbnail1" id="videoThumb">
+                         <div class="home-img video-thumbnail1" id="videoThumb">
                             <img id="ytThumb" src="https://impelsysgcc.com/wp-content/uploads/2026/03/TechCircle-GCC-Fireside-thumbnail-2-1.jpg" class="home-img-fluid" alt="Video Thumbnail">
                             <div class="play-button">▶</div>
                         </div>
                     </div>
-              
-            
-
             <!-- RIGHT: CONTENT -->
             <div class="col-md-6">
                 <div class="home-hero-overlay">
