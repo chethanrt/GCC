@@ -3,8 +3,6 @@
  * Template Name: Contact Us
  */
 
-wp_enqueue_style('contact-css', get_stylesheet_directory_uri() . '/assets/css/contact.css');
-
 get_header();
 ?>
 
@@ -19,7 +17,7 @@ get_header();
         <?php endif; ?>
     >
         <div class="co-hero-overlay">
-            <h1><?php the_field('hero_title'); ?></h1>
+            <h1><?php the_field('hero_title'); ?><?php if (get_field('hero_subtitle')) : ?> <span class="co-green"><?php the_field('hero_subtitle'); ?></span><?php endif; ?></h1>
             <?php if (get_field('hero_description')) : ?>
                 <p class="co-hero-desc"><?php the_field('hero_description'); ?></p>
             <?php endif; ?>
@@ -38,7 +36,7 @@ get_header();
                     <div class="email-box">
                         <div class="align-items-center">
                             <div class="me-3">
-                                <img class="img-fluid" src="<?php echo get_stylesheet_directory_uri(); ?>/assets/images/email-icon.png" alt="">
+                                <img class="img-fluid" src="<?php echo esc_url(wp_upload_dir()['baseurl']); ?>/2026/03/email-icon.png" alt="">
                             </div>
                             <div class="w-100">
                                 <h4>Email</h4>
@@ -53,7 +51,7 @@ get_header();
                     <div class="email-box">
                         <div class="align-items-center">
                             <div class="me-3">
-                                <img class="img-fluid" src="<?php echo get_stylesheet_directory_uri(); ?>/assets/images/phone-icon.png" alt="">
+                                <img class="img-fluid" src="<?php echo esc_url(wp_upload_dir()['baseurl']); ?>/2026/03/phone-icon.png" alt="">
                             </div>
                             <div class="w-100">
                                 <h4>Phone</h4>
