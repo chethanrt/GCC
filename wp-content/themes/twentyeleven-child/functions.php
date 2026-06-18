@@ -272,6 +272,15 @@ function my_template_styles() {
         );
     }
 
+ if ( is_singular( 'leadership' ) ) {
+    wp_enqueue_style(
+        'leadership-detail-css',
+        get_stylesheet_directory_uri() . '/assets/css/leaders-detail.css',
+        [],
+        time()
+    );
+}
+
     if ( is_page_template( 'template-insights.php' ) ) {
         wp_enqueue_style(
             'insights-css',
@@ -397,3 +406,39 @@ function insights_load_more_handler() {
 }
 add_action( 'wp_ajax_insights_load_more', 'insights_load_more_handler' );
 add_action( 'wp_ajax_nopriv_insights_load_more', 'insights_load_more_handler' );
+
+
+function register_leadership_cpt() {
+
+    $labels = array(
+        'name'               => 'Leadership',
+        'singular_name'      => 'Leadership',
+        'add_new'            => 'Add New',
+        'add_new_item'       => 'Add New Leader',
+        'edit_item'          => 'Edit Leader',
+        'new_item'           => 'New Leader',
+        'view_item'          => 'View Leader',
+        'search_items'       => 'Search Leaders',
+        'not_found'          => 'No Leaders Found',
+        'menu_name'          => 'Leadership'
+    );
+
+    register_post_type('leadership', array(
+        'labels'        => $labels,
+        'public'        => true,
+        'has_archive'   => false,
+        'rewrite'       => array(
+            'slug'       => 'our-team',
+            'with_front' => false
+        ),
+        'supports'      => array(
+            'title',
+            'thumbnail'
+        ),
+        'show_in_rest'  => true,
+        'menu_icon'     => 'dashicons-businessperson'
+    ));
+}
+
+add_action('init', 'register_leadership_cpt');
+?>
