@@ -117,4 +117,12 @@ jQuery(document).ready(function ($) {
         }
     });
 
+     $(window).on('scroll', function () {
+        if ($(window).scrollTop() > 50) {
+            $('header').addClass('sticky-header');
+        } else {
+            $('header').removeClass('sticky-header');
+        }
+    });
+
 });
