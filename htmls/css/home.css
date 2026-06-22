@@ -14,6 +14,7 @@ section.home-hero-container {
 
 .home-flex {
     display: flex;
+    align-items: center;
 }
 
 .home-hero-container .col-md-6 {
@@ -21,7 +22,7 @@ section.home-hero-container {
 }
 
 .home-img {
-    width: 90%;
+    width: 100%;
     height: auto;
     position: relative;
 }
@@ -37,6 +38,8 @@ section.home-hero-container {
     z-index: 1;
     text-align: left;
     padding: 0;
+    padding-left: 50px;
+
 }
 
 .home-hero-overlay h1 {
@@ -73,7 +76,8 @@ span.home-green {
 
 .home-hero-desc {
     font-family: 'Sailec Light';
-    font-size: 17px;
+    /* font-size: 17px; */
+    font-size: 1.5vw;
     color: #696969;
     line-height: 1.6;
     margin: 0;
@@ -156,7 +160,7 @@ span.home-btm-green {
 }
 
 .home .box-bottom {
-    margin-top: auto;
+    margin-top: 20px;
     border-left: 5px solid #005900;
     padding-left: 10px;
 }
@@ -238,7 +242,7 @@ span.home-btm-green {
 }
 
 .home-left {
-    width: 20%;
+    width: 15%;
     display: flex;
     justify-content: center;
     align-items: center;
@@ -259,20 +263,24 @@ span.home-btm-green {
 }
 
 .home-vline {
-    width: 20px;
+    width: 1%;
     background: #F6F6F6;
     margin: 0 20px;
     align-self: stretch;
 }
 
 .home-middle {
-    width: 40%;
+    width: 15%;
 }
 
 .home-middle p {
     color: #0F0F33;
     font-size: 20px;
     font-family: 'Sailec Medium';
+}
+
+.home-right {
+    width: 90%;
 }
 
 .home-right p {
@@ -556,9 +564,9 @@ section.pact-content {
 }
 
 @media (min-width: 2301px) {
-    .home-content {
+    /* .home-content {
         margin-top: -250px;
-    }
+    } */
 }
 
 @media (min-width: 1801px) and (max-width: 2300px) {
