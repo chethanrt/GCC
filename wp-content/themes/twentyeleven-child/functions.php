@@ -30,13 +30,13 @@ function custom_archive_title($title) {
 add_filter('get_the_archive_title', 'custom_archive_title');
 
 
-function redirect_404_to_home() {
-    if (is_404()) {
-        wp_redirect(home_url());
-        exit;
-    }
-}
-add_action('template_redirect', 'redirect_404_to_home');
+// function redirect_404_to_home() {
+//     if (is_404()) {
+//         wp_redirect(home_url());
+//         exit;
+//     }
+// }
+// add_action('template_redirect', 'redirect_404_to_home');
 
 add_filter('pre_comment_content', 'sanitize_comment_input');
 function sanitize_comment_input($comment) {
@@ -280,6 +280,15 @@ function my_template_styles() {
         time()
     );
 }
+ if ( is_404() ) {
+        wp_enqueue_style(
+            '404-css',
+            get_stylesheet_directory_uri() . '/assets/css/404.css',
+            [],
+            filemtime( get_stylesheet_directory() . '/assets/css/404.css' )
+        );
+    }
+
 
     if ( is_page_template( 'template-insights.php' ) ) {
         wp_enqueue_style(
