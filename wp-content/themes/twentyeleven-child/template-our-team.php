@@ -129,18 +129,26 @@ $cta              = get_field('book_a_conversation');
             >
         </div>
 
-        <p class="l-cta-desc">
-            <?php echo wp_kses_post($cta['heading'] ?? ''); ?>
-        </p>
+                <?php
+            $link = $cta['button']['link'] ?? '';
 
-        <?php if (!empty($cta['button']['text'])) : ?>
-            <a
-                href="<?php echo !empty($cta['button']['link']) ? esc_url($cta['button']['link']) : '#'; ?>"
-                class="l-cta-btn"
-            >
-                <?php echo esc_html($cta['button']['text']); ?>
-            </a>
-        <?php endif; ?>
+            if ($link && !preg_match('#^(https?:)?//#', $link)) {
+                $link = home_url($link);
+            }
+            ?>
+
+            <p class="l-cta-desc">
+                <?php echo wp_kses_post($cta['heading'] ?? ''); ?>
+            </p>
+
+            <?php if (!empty($cta['button']['text'])) : ?>
+                <a
+                    href="<?php echo esc_url($link ?: '#'); ?>"
+                    class="l-cta-btn"
+                >
+                    <?php echo esc_html($cta['button']['text']); ?>
+                </a>
+            <?php endif; ?>
 
     </div>
 </section>
