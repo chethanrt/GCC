@@ -76,8 +76,8 @@ span.home-green {
 
 .home-hero-desc {
     font-family: 'Sailec Light';
-    /* font-size: 17px; */
-    font-size: 1.5vw;
+    font-size: 17px;
+    /* font-size: 1.5vw; */
     color: #696969;
     line-height: 1.6;
     margin: 0;
@@ -120,9 +120,8 @@ span.home-green {
 .home .container.effort .box-container .separator {
     width: 4px;
     background-color: #005900;
-    height: 320px;
-    margin: auto;
-    display: flex;
+    margin: 40px 20px;
+    align-self: stretch;
 }
 
 span.home-btm-green {
@@ -148,6 +147,7 @@ span.home-btm-green {
     color: #fff;
     text-align: left;
     font-family: 'Sailec Medium';
+    font-size: 3vw;
 }
 
 
@@ -156,6 +156,7 @@ span.home-btm-green {
     color: #E7E7E7;
     margin: 0;
     padding: 0;
+    font-size: 17px;
     line-height: 1.4;
 }
 
@@ -289,6 +290,7 @@ span.home-btm-green {
     font-family: 'Sailec Light';
     margin: 0;
     padding: 0;
+    line-height: 1.5;
 }
 /* Responsive */
 
@@ -593,6 +595,21 @@ section.pact-content {
     }
 }
 
+@media (max-width: 991px) {
+    .home .certifications-grid {
+        grid-template-columns: repeat(2, 1fr);
+    }
+    .home-middle {
+        width: 25%;
+    }
+}
+
+@media (max-width: 850px) {
+    .home-middle {
+        width: 30%;
+    }
+}
+
 @media (min-width: 1500px) {
 
   .swiper-slide img {
@@ -640,6 +657,14 @@ section.pact-content {
         font-size: 24px;
     }
 
+    .home-hero-desc {
+        font-size: 17px;
+    }
+
+    .home .container.effort .box {
+        padding: 20px;
+    }
+    
     .home-flex {
         display: flex;
         flex-direction: column;
@@ -648,10 +673,6 @@ section.pact-content {
 
     .home-img {
         width: 100%;
-    }
-
-    .home .certifications-grid {
-        grid-template-columns: repeat(2, 1fr);
     }
 
     .home-left {
@@ -701,6 +722,7 @@ section.pact-content {
 
     .home .box-container {
         display: block;
+        padding: 1% 2%;
     }
     
     .home .container.effort .box {
@@ -714,5 +736,15 @@ section.pact-content {
 
     .home .box-bottom {
         margin-top: 30px;
+    }
+
+    .home .container.effort .box-container .box h2,
+    .home .container.effort .box-container .box h1 {
+        font-size: 4vw;
+        line-height: 1.8;
+    }
+
+    .home-hero-overlay {
+        padding-left: 0px;
     }
 }
