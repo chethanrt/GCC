@@ -30,6 +30,7 @@ section.home-hero-container {
     width: 100%;
     height: auto;
     border-radius: 16px;
+    cursor: pointer;
 }
 
 .home-hero-overlay {
@@ -347,6 +348,7 @@ span.home-btm-green {
     background: rgba(0, 0, 0, 0.4);
     padding: 15px 20px;
     border-radius: 50%;
+    cursor: pointer;
 }
 
 section.pact-content {
