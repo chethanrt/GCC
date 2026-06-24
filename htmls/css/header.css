@@ -119,6 +119,11 @@ ul#menu-menu-1 li>a {
 .nav-links li {
     list-style: none;
 }
+
+li.menu-item.contact-btn {
+    margin-left: 10px;
+}
+
 li.contact-btn a {
     position: relative;
     text-align: center;
@@ -241,5 +246,8 @@ li.contact-btn a:hover {
     .wrapper .btn.close-btn {
         right: 15px;
         top: 15px;
+    }
+    li.menu-item.contact-btn {
+        margin-left: 0px;
     }
 }

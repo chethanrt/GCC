@@ -31,6 +31,7 @@ section.home-hero-container {
     width: 100%;
     height: auto;
     border-radius: 16px;
+    cursor: pointer;
 }
 
 .home-hero-overlay {
@@ -125,7 +126,20 @@ span.home-green {
 }
 
 span.home-btm-green {
-    border-bottom: 10px solid #8BD440;
+    position: relative;
+    display: inline-block;
+    z-index: 1;
+}
+
+span.home-btm-green::after {
+    content: "";
+    position: absolute;
+    left: 0;
+    bottom: 0px;
+    width: 100%;
+    height: 15px;
+    z-index: -1;
+    background: #8BD440;
 }
 
 
@@ -589,9 +603,18 @@ section.pact-content {
     }
 }
 
+@media (max-width: 1300px) {
+    .home-middle {
+        width: 20%;
+    }
+}
+
 @media (max-width: 1200px) {
     .home .certifications-grid {
         grid-template-columns: repeat(3, 1fr);
+    }
+    span.home-btm-green::after {
+        height: 12px;
     }
 }
 
@@ -601,6 +624,9 @@ section.pact-content {
     }
     .home-middle {
         width: 25%;
+    }
+    span.home-btm-green::after {
+        height: 10px;
     }
 }
 
@@ -746,5 +772,21 @@ section.pact-content {
 
     .home-hero-overlay {
         padding-left: 0px;
+    }
+    
+    span.home-btm-green::after {
+        height: 15px;
+    }
+}
+
+@media (max-width: 580px) {
+    span.home-btm-green::after {
+        height: 12px;
+    }
+}
+
+@media (max-width: 470px) {
+    span.home-btm-green::after {
+        height: 10px;
     }
 }
