@@ -1,0 +1,190 @@
+# CI validation for the GCC WordPress repo.
+# Runs read-only checks on pull requests. It never connects to a server and needs no secrets.
+
+name: CI
+
+on:
+  pull_request:
+    branches: [develop, main]
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+concurrency:
+  group: ci-${{ github.ref }}
+  cancel-in-progress: true
+
+env:
+  # Paths that the pipeline will deploy. Everything else in the repo is never deployed.
+  DEPLOY_PATHS: "wp-content/themes/twentyeleven-child wp-content/mu-plugins"
+  # Update to the staging server's PHP version once confirmed.
+  PHP_VERSION: "8.2"
+  # Files that must never be deployed or committed.
+  FORBIDDEN_REGEX: '(^|/)(wp-config[^/]*\.php|\.env(\.[^/]*)?|[^/]*\.sql(\.gz)?|[^/]*\.wpress|\.htaccess|web\.config|id_rsa[^/]*|[^/]*\.pem|wflogs/.*|ai1wm-backups/.*)$'
+
+jobs:
+  deploy-scope:
+    name: Deploy scope check
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    steps:
+      - uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683 # v4.2.2
+        with:
+          persist-credentials: false
+
+      - name: Fail if forbidden files are in the deploy paths
+        run: |
+          set -euo pipefail
+          matches=$(git ls-files -- $DEPLOY_PATHS | grep -E "$FORBIDDEN_REGEX" || true)
+          if [ -n "$matches" ]; then
+            echo "::error::Forbidden files found inside deploy paths:"
+            echo "$matches"
+            exit 1
+          fi
+          echo "No forbidden files in deploy paths."
+
+      - name: Warn about sensitive files tracked elsewhere in the repo
+        run: |
+          set -euo pipefail
+          matches=$(git ls-files | grep -E "$FORBIDDEN_REGEX" || true)
+          if [ -n "$matches" ]; then
+            count=$(echo "$matches" | wc -l)
+            echo "::warning::$count sensitive/runtime file(s) are tracked in git and should be removed from the repo (they are excluded from deployment)."
+            {
+              echo "### Sensitive files tracked in git"
+              echo '```'
+              echo "$matches"
+              echo '```'
+            } >> "$GITHUB_STEP_SUMMARY"
+          fi
+
+      - name: Check child theme header
+        run: |
+          set -euo pipefail
+          css=wp-content/themes/twentyeleven-child/style.css
+          grep -qE '^Theme Name:' "$css" || { echo "::error file=$css::Missing 'Theme Name:' header"; exit 1; }
+          grep -qE '^Template:[[:space:]]*twentyeleven[[:space:]]*$' "$css" || { echo "::error file=$css::Missing or wrong 'Template: twentyeleven' header"; exit 1; }
+          echo "Theme header OK."
+
+      - name: Warn about backup files and large files
+        run: |
+          set -euo pipefail
+          backups=$(git ls-files -- $DEPLOY_PATHS | grep -E '(_[0-9]{6}-[0-9]{4}\.php|(^|/)desktop\.ini|(^|/)Thumbs\.db|\.(bak|orig|old|swp))$' || true)
+          if [ -n "$backups" ]; then
+            echo "::warning::Backup/OS files in deploy paths will be publicly reachable: $(echo "$backups" | tr '\n' ' ')"
+          fi
+          large=$(git ls-files -z -- $DEPLOY_PATHS | xargs -0 -r du -k | awk '$1 > 5120 {printf "%s (%.1f MB)\n", substr($0, index($0,$2)), $1/1024}')
+          if [ -n "$large" ]; then
+            echo "::warning::Files larger than 5 MB in deploy paths (consider optimising or moving to uploads)."
+            {
+              echo "### Files larger than 5 MB in deploy paths"
+              echo '```'
+              echo "$large"
+              echo '```'
+            } >> "$GITHUB_STEP_SUMMARY"
+          fi
+
+  php-lint:
+    name: PHP syntax check
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683 # v4.2.2
+        with:
+          persist-credentials: false
+
+      - uses: shivammathur/setup-php@9e72090525849c5e82e596468b86eb55e9cc5401 # 2.32.0
+        with:
+          php-version: ${{ env.PHP_VERSION }}
+          coverage: none
+          tools: none
+
+      - name: Run php -l on deployable PHP files
+        run: |
+          set -uo pipefail
+          failed=0
+          total=0
+          while IFS= read -r -d '' file; do
+            total=$((total + 1))
+            if ! out=$(php -l "$file" 2>&1); then
+              failed=$((failed + 1))
+              echo "::error file=$file::$(echo "$out" | head -n 1)"
+            fi
+          done < <(git ls-files -z -- $DEPLOY_PATHS | grep -z '\.php$')
+          echo "Checked $total PHP file(s) with PHP $PHP_VERSION; $failed failed."
+          [ "$failed" -eq 0 ]
+
+  secret-scan:
+    name: Secret scan
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    env:
+      GITLEAKS_VERSION: "8.21.2"
+      GITLEAKS_SHA256: "5bc41815076e6ed6ef8fbecc9d9b75bcae31f39029ceb55da08086315316e3ba"
+    steps:
+      - uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683 # v4.2.2
+        with:
+          fetch-depth: 0
+          persist-credentials: false
+
+      - name: Install gitleaks (checksum verified)
+        run: |
+          set -euo pipefail
+          tarball="gitleaks_${GITLEAKS_VERSION}_linux_x64.tar.gz"
+          curl -fsSL -o "$RUNNER_TEMP/$tarball" \
+            "https://github.com/gitleaks/gitleaks/releases/download/v${GITLEAKS_VERSION}/${tarball}"
+          echo "${GITLEAKS_SHA256}  $RUNNER_TEMP/$tarball" | sha256sum -c -
+          tar -xzf "$RUNNER_TEMP/$tarball" -C "$RUNNER_TEMP" gitleaks
+          "$RUNNER_TEMP/gitleaks" version
+
+      # On PRs, scan only the commits the PR adds; values are redacted in the log.
+      - name: Scan pull request commits
+        if: github.event_name == 'pull_request'
+        env:
+          BASE_SHA: ${{ github.event.pull_request.base.sha }}
+          HEAD_SHA: ${{ github.event.pull_request.head.sha }}
+        run: |
+          "$RUNNER_TEMP/gitleaks" git --no-banner --redact --verbose \
+            --log-opts="${BASE_SHA}..${HEAD_SHA}" .
+
+      - name: Scan deploy paths (manual run)
+        if: github.event_name != 'pull_request'
+        run: |
+          set -euo pipefail
+          for p in $DEPLOY_PATHS; do
+            "$RUNNER_TEMP/gitleaks" dir --no-banner --redact --verbose "$p"
+          done
+
+  phpcs:
+    name: WordPress coding standards (report only)
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683 # v4.2.2
+        with:
+          persist-credentials: false
+
+      - uses: shivammathur/setup-php@9e72090525849c5e82e596468b86eb55e9cc5401 # 2.32.0
+        with:
+          php-version: ${{ env.PHP_VERSION }}
+          coverage: none
+          tools: composer
+
+      - name: Install WordPress Coding Standards
+        run: |
+          composer global config --no-interaction allow-plugins.dealerdirect/phpcodesniffer-composer-installer true
+          composer global require --no-interaction --no-progress "wp-coding-standards/wpcs:^3.1"
+
+      # Report only: existing code is not expected to pass yet, so this never fails the build.
+      - name: Run PHPCS
+        run: |
+          phpcs="$(composer global config bin-dir --absolute --quiet)/phpcs"
+          "$phpcs" --standard=WordPress --extensions=php --report=summary,source \
+            $DEPLOY_PATHS | tee "$RUNNER_TEMP/phpcs.txt" || true
+          {
+            echo "### PHPCS (WordPress standard) - report only"
+            echo '```'
+            tail -n 40 "$RUNNER_TEMP/phpcs.txt"
+            echo '```'
+          } >> "$GITHUB_STEP_SUMMARY"
