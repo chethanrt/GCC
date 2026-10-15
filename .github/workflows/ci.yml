@@ -1,9 +1,14 @@
 # CI validation for the GCC WordPress repo.
-# Runs read-only checks on pull requests. It never connects to a server and needs no secrets.
+# Runs read-only checks on pushes and pull requests. It never connects to a server and needs no secrets.
 
 name: CI
 
 on:
+  push:
+    branches: ["**"]
+    paths-ignore:
+      - "htmls/**"
+      - "**.md"
   pull_request:
     branches: [develop, main]
   workflow_dispatch:
@@ -138,18 +143,31 @@ jobs:
           tar -xzf "$RUNNER_TEMP/$tarball" -C "$RUNNER_TEMP" gitleaks
           "$RUNNER_TEMP/gitleaks" version
 
-      # On PRs, scan only the commits the PR adds; values are redacted in the log.
-      - name: Scan pull request commits
-        if: github.event_name == 'pull_request'
+      # Scan only the new commits (PR commits or pushed commits); values are redacted in the log.
+      - name: Scan new commits
+        if: github.event_name != 'workflow_dispatch'
         env:
-          BASE_SHA: ${{ github.event.pull_request.base.sha }}
-          HEAD_SHA: ${{ github.event.pull_request.head.sha }}
+          EVENT: ${{ github.event_name }}
+          PR_BASE: ${{ github.event.pull_request.base.sha }}
+          PR_HEAD: ${{ github.event.pull_request.head.sha }}
+          BEFORE: ${{ github.event.before }}
+          SHA: ${{ github.sha }}
         run: |
-          "$RUNNER_TEMP/gitleaks" git --no-banner --redact --verbose \
-            --log-opts="${BASE_SHA}..${HEAD_SHA}" .
+          set -euo pipefail
+          if [ "$EVENT" = "pull_request" ]; then
+            range="${PR_BASE}..${PR_HEAD}"
+          elif [ -n "$BEFORE" ] && [ "$BEFORE" != "0000000000000000000000000000000000000000" ] \
+               && git cat-file -e "${BEFORE}^{commit}" 2>/dev/null; then
+            range="${BEFORE}..${SHA}"
+          else
+            # New branch or force push: scan commits not yet on develop.
+            range="origin/develop..${SHA}"
+          fi
+          echo "Scanning commit range: $range"
+          "$RUNNER_TEMP/gitleaks" git --no-banner --redact --verbose --log-opts="$range" .
 
       - name: Scan deploy paths (manual run)
-        if: github.event_name != 'pull_request'
+        if: github.event_name == 'workflow_dispatch'
         run: |
           set -euo pipefail
           for p in $DEPLOY_PATHS; do
