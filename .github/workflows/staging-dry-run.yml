@@ -1,0 +1,157 @@
+# Staging dry run for the GCC WordPress site.
+# READ-ONLY: downloads the theme and mu-plugin currently on the staging server over SFTP,
+# compares them with this branch, and reports the differences. It never uploads,
+# deletes or changes anything on the server.
+#
+# Required in Settings -> Environments -> staging:
+#   Variables: STAGING_HOST, STAGING_PORT, STAGING_USER, STAGING_WP_ROOT
+#   Secrets:   STAGING_SSH_KEY (private key), STAGING_KNOWN_HOSTS (verified host key line)
+
+name: Staging dry run
+
+on:
+  workflow_dispatch:
+    inputs:
+      staging_url:
+        description: "Optional staging site URL to check over HTTP (e.g. https://example.com/)"
+        required: false
+        default: ""
+
+permissions:
+  contents: read
+
+concurrency:
+  group: staging-deploy
+  cancel-in-progress: false
+
+env:
+  THEME_DIR: wp-content/themes/twentyeleven-child
+  MU_PLUGIN: wp-content/mu-plugins/monk-post-types.php
+
+jobs:
+  dry-run:
+    name: Compare repo with staging (read-only)
+    runs-on: ubuntu-latest
+    environment: staging
+    timeout-minutes: 20
+    env:
+      STAGING_HOST: ${{ vars.STAGING_HOST }}
+      STAGING_PORT: ${{ vars.STAGING_PORT }}
+      STAGING_USER: ${{ vars.STAGING_USER }}
+      STAGING_WP_ROOT: ${{ vars.STAGING_WP_ROOT }}
+    steps:
+      - uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683 # v4.2.2
+        with:
+          persist-credentials: false
+
+      - name: Check configuration
+        env:
+          HAS_KEY: ${{ secrets.STAGING_SSH_KEY != '' }}
+          HAS_KNOWN_HOSTS: ${{ secrets.STAGING_KNOWN_HOSTS != '' }}
+        run: |
+          set -euo pipefail
+          missing=0
+          for v in STAGING_HOST STAGING_PORT STAGING_USER STAGING_WP_ROOT; do
+            if [ -z "${!v}" ]; then echo "::error::Environment variable $v is not set"; missing=1; fi
+          done
+          [ "$HAS_KEY" = "true" ] || { echo "::error::Secret STAGING_SSH_KEY is not set"; missing=1; }
+          [ "$HAS_KNOWN_HOSTS" = "true" ] || { echo "::error::Secret STAGING_KNOWN_HOSTS is not set"; missing=1; }
+          [ "$missing" -eq 0 ]
+          echo "Target: $STAGING_USER@$STAGING_HOST:$STAGING_PORT  root=$STAGING_WP_ROOT"
+
+      - name: Install lftp
+        run: sudo apt-get update -qq && sudo apt-get install -y -qq lftp
+
+      - name: Write SSH key and known_hosts
+        env:
+          SSH_KEY: ${{ secrets.STAGING_SSH_KEY }}
+          KNOWN_HOSTS: ${{ secrets.STAGING_KNOWN_HOSTS }}
+        run: |
+          set -euo pipefail
+          umask 077
+          printf '%s\n' "$SSH_KEY" > "$RUNNER_TEMP/deploy_key"
+          printf '%s\n' "$KNOWN_HOSTS" > "$RUNNER_TEMP/known_hosts"
+
+      - name: Download current staging files (read-only)
+        run: |
+          set -euo pipefail
+          snap="$RUNNER_TEMP/server-snapshot"
+          mkdir -p "$snap/mu-plugins"
+          cat > "$RUNNER_TEMP/download.lftp" <<EOF
+          set sftp:auto-confirm no
+          set sftp:connect-program "ssh -a -x -i $RUNNER_TEMP/deploy_key -o IdentitiesOnly=yes -o BatchMode=yes -o StrictHostKeyChecking=yes -o UserKnownHostsFile=$RUNNER_TEMP/known_hosts -p $STAGING_PORT"
+          set net:max-retries 2
+          set net:timeout 30
+          open -u "$STAGING_USER," "sftp://$STAGING_HOST"
+          mirror --parallel=4 "$STAGING_WP_ROOT/$THEME_DIR" "$snap/theme"
+          get -O "$snap/mu-plugins" "$STAGING_WP_ROOT/$MU_PLUGIN" || echo "mu-plugin not found on server"
+          bye
+          EOF
+          lftp -f "$RUNNER_TEMP/download.lftp"
+          echo "Downloaded $(find "$snap" -type f | wc -l) file(s) from staging."
+
+      - name: Compare repo with staging
+        run: |
+          set -uo pipefail
+          snap="$RUNNER_TEMP/server-snapshot"
+          report="$RUNNER_TEMP/report"
+          mkdir -p "$report"
+
+          diff -rq "$THEME_DIR" "$snap/theme" > "$report/theme-summary.txt" 2>&1
+          diff -ru "$THEME_DIR" "$snap/theme" > "$report/theme.diff" 2>&1
+          if [ -f "$snap/mu-plugins/monk-post-types.php" ]; then
+            diff -u "$MU_PLUGIN" "$snap/mu-plugins/monk-post-types.php" > "$report/mu-plugin.diff" 2>&1
+          else
+            echo "monk-post-types.php is not on the server (would be a new file)." > "$report/mu-plugin.diff"
+          fi
+
+          only_repo=$(grep -c "^Only in $THEME_DIR" "$report/theme-summary.txt" || true)
+          only_server=$(grep -c "^Only in $snap/theme" "$report/theme-summary.txt" || true)
+          changed=$(grep -c " differ$" "$report/theme-summary.txt" || true)
+          mu_changed=$([ -s "$report/mu-plugin.diff" ] && echo "yes" || echo "no")
+
+          {
+            echo "## Staging dry run (no changes made)"
+            echo ""
+            echo "| | Count |"
+            echo "|---|---|"
+            echo "| Files only in repo (would be **added**) | $only_repo |"
+            echo "| Files only on server (would be **removed** by a sync with delete) | $only_server |"
+            echo "| Files that differ (would be **overwritten**) | $changed |"
+            echo "| mu-plugin differs | $mu_changed |"
+            echo ""
+            echo "Files only on the server or changed there may be direct edits on staging. Review them before the first real deploy."
+            echo ""
+            echo "<details><summary>File list</summary>"
+            echo ""
+            echo '```'
+            sed "s#$snap/theme#[server]#g" "$report/theme-summary.txt" | head -n 300
+            echo '```'
+            echo "</details>"
+          } >> "$GITHUB_STEP_SUMMARY"
+
+      - name: Check staging URL over HTTP
+        if: inputs.staging_url != ''
+        env:
+          STAGING_URL: ${{ inputs.staging_url }}
+        run: |
+          set -uo pipefail
+          code=$(curl -sS -L -o "$RUNNER_TEMP/home.html" -w '%{http_code}' --max-time 30 "$STAGING_URL" || echo "000")
+          echo "HTTP status for $STAGING_URL: $code"
+          echo "| Staging URL HTTP status | $code |" >> "$GITHUB_STEP_SUMMARY"
+          if grep -qiE "critical error|fatal error" "$RUNNER_TEMP/home.html" 2>/dev/null; then
+            echo "::warning::Staging homepage contains a PHP error message."
+          fi
+
+      - name: Upload snapshot and diff report
+        uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02 # v4.6.2
+        with:
+          name: staging-dry-run-${{ github.run_number }}
+          path: |
+            ${{ runner.temp }}/report
+            ${{ runner.temp }}/server-snapshot
+          retention-days: 7
+
+      - name: Remove SSH key
+        if: always()
+        run: rm -f "$RUNNER_TEMP/deploy_key" "$RUNNER_TEMP/known_hosts"
